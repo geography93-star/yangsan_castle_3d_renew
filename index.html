@@ -60,6 +60,7 @@ button{margin-top:10px;margin-right:6px;padding:5px 10px;border:1px solid var(--
 @keyframes popin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 #pop h2{margin:0 34px 4px 0;font-size:19px;letter-spacing:-.01em}
 #pop .dist{display:flex;align-items:baseline;gap:8px;margin:2px 0 10px;color:var(--mute);font-size:13px}
+#pop .dist{flex-wrap:wrap;row-gap:2px}#pop .dist>span:first-child{white-space:nowrap}#popw{flex-basis:100%;color:var(--ink);font-weight:600}
 #pop .dist b{color:#c0392b;font-size:22px;font-variant-numeric:tabular-nums}
 #pop p{margin:0;color:var(--ink);font-size:14px;line-height:1.65}
 #pop .tip{margin-top:10px;font-size:12px;color:var(--mute)}
@@ -87,7 +88,7 @@ button{margin-top:10px;margin-right:6px;padding:5px 10px;border:1px solid var(--
 <canvas id="c" tabindex="0" style="outline:none"></canvas>
 <button id="pt" aria-label="설정">☰</button>
 <div id="info"><span id="itx"></span><button id="ix">거리 지우기</button></div>
-<div id="pop" role="dialog" aria-labelledby="popt"><button id="popx" aria-label="설명 닫기">×</button><h2 id="popt"></h2><div class="dist">현 위치에서 <b id="popd"></b><span id="popw"></span></div><p id="popb"></p><div class="tip">× 를 누르면 설명이 닫히고, 빨간 선으로 3D 거리가 계속 표시됩니다.</div></div>
+<div id="pop" role="dialog" aria-labelledby="popt"><button id="popx" aria-label="설명 닫기">×</button><h2 id="popt"></h2><div class="dist"><span>현 위치에서 직선 <b id="popd"></b></span><span id="popw"></span></div><p id="popb"></p><div class="tip">× 를 누르면 설명이 닫히고, 빨간 선으로 3D 거리가 계속 표시됩니다.</div></div>
 <div id="exg">지형 높이 과장 <b id="exgv">2×</b> — 실제 비율 아님</div>
 <div id="tour"><span>안내</span><button data-g="북문">북문</button><button data-g="객사">객사</button><button data-g="동헌">동헌</button><button data-g="동문">동문</button><button data-g="서문">서문</button><button data-g="홍전문">홍전문</button></div>
 <div id="src"><b>자료와 복원 근거</b>
@@ -99,6 +100,7 @@ button{margin-top:10px;margin-right:6px;padding:5px 10px;border:1px solid var(--
 <li><b>성문</b> — 『양산군읍지』에 따르면 성문은 북문·동문·서문 3곳이며, 남쪽은 홍전문(紅箭門)을 세운 통로로 성 밖에서 남문이라 불렀습니다(장혜진, 2007, 30쪽). 그래서 남쪽은 문루 없이 통로와 홍전문으로 표현했습니다.</li>
 <li><b>건물·지형·길·가로수</b> — 국토지리정보원 수치지도 1:1,000, 9도엽(2025·2026).</li>
 <li><b>바닥 영상</b> — 네이버지도 위성영상 2장을 이어 붙임(0.649 m/픽셀).</li>
+<li><b>현 위치·도보 시간</b> — 현 위치는 양산시장애인복지관 앞 보도(이정표 설치 지점)입니다. 성문까지 도보 거리는 수치지도 도로면(골목 포함)을 따라 최단 경로로 계산했고, 보행속도 4 km/h 기준이며 신호 대기 시간은 넣지 않았습니다.</li>
 <li><b>축척</b> — 3D 장면은 수치지도에 맞춰 <b>0.65 m/픽셀</b>로 고정했습니다. 사용자가 조절하는 값이 아닙니다.</li></ul>
 <p><b>가정값</b> — 성벽 높이 4m·두께 3m·성문 폭 14m, 문루·홍전문·객사·동헌의 건물 형태와 칸 수. 발굴 성과나 복원안에 근거하지 않은 체험용 설정입니다.</p>
 <p><b>나무</b> — 가로수 681그루만 실제 위치이고 나머지는 위성영상 녹지 판독으로 배치한 것입니다.</p>
@@ -1461,7 +1463,7 @@ function addTrees(){const IDX=[];for(let i=0;i<TREES.t.length;i++){if(TSTEP>1&&T
  leaf.instanceColor.needsUpdate=true;trunk.castShadow=leaf.castShadow=true;leaf.receiveShadow=true;
  treesG=new THREE.Group();treesG.add(trunk);treesG.add(leaf);treesG.visible=o10.checked;S.add(treesG)}
 const CX=145.5,CZ=-238.8;
-const LAND=[["양산초등학교", 264.3, -156.2], ["양산중학교", 317.0, -550.5], ["양산고등학교", 398.0, -456.9], ["양산남부시장", -322.1, 206.0], ["신기초등학교", 23.0, -834.3]], HERE={"x": 1.6, "z": -99.2};
+const LAND=[["양산초등학교", 264.3, -156.2], ["양산중학교", 317.0, -550.5], ["양산고등학교", 398.0, -456.9], ["양산남부시장", -322.1, 206.0], ["신기초등학교", 23.0, -834.3]], HERE={"x": 9.5, "z": -85.8};
 var marks,gxW=0,gzW=0,dxW=0,dzW=0;
 function addMarks(){marks=new THREE.Group();
  LAND.forEach(([t,x,z])=>{const l=label(t,0,.62,'#3d4a5c');l.position.set(x,gh({x:x,z:z})+16,z);marks.add(l)});
@@ -1492,11 +1494,15 @@ function pickAt(cx,cy){
  const r=cv.getBoundingClientRect();
  rc.setFromCamera({x:(cx-r.left)/r.width*2-1,y:-((cy-r.top)/r.height)*2+1},cam);
  const hit=rc.intersectObjects(picks,false)[0];return hit?hit.object:null}
+/* 도보 경로: 수치지도 도로면(골목 포함) 위 최단 경로, 보행속도 4 km/h, 신호 대기 제외 */
+const WALK={"북문":317,"동문":265,"서문":294,"홍전문":352};
+function walkInfo(nm,d){const w=WALK[nm];if(w)return {m:w,min:Math.max(1,Math.round(w/66.7)),net:true};
+ const e=d*1.3;return {m:Math.round(e),min:Math.max(1,Math.round(e/66.7)),net:false}}
 function showDist(o){
  sel=o;const d=Math.hypot(o.userData.x-HERE.x,o.userData.z-HERE.z);
- const walk=Math.round(d/1.25/60*10)/10;
+ const wk=walkInfo(o.userData.nm,d);
  itx.innerHTML='<b>'+o.userData.nm+'</b> &nbsp;현 위치에서 <span class="d">'+Math.round(d)+' m</span>'+
-   '<span style="opacity:.6"> &nbsp;걸어서 약 '+walk.toFixed(1)+'분</span>';
+   '<span style="opacity:.6"> &nbsp;걸어서 약 '+wk.min+'분</span>';
  info.style.display='flex';
  if(line){marks.remove(line);line.geometry.dispose();line=null}
  const a=new THREE.Vector3(HERE.x,gh({x:HERE.x,z:HERE.z})+2,HERE.z),
@@ -1513,7 +1519,7 @@ function showDist(o){
  lab.position.copy(mid).add(new THREE.Vector3(0,8,0));line.add(lab)}
 function openPop(o){const nm=o.userData.nm,tx=(typeof TOURTX!=='undefined'&&TOURTX[nm])||'';if(!tx){pop.style.display='none';return}
  const d=Math.hypot(o.userData.x-HERE.x,o.userData.z-HERE.z);
- popt.textContent=nm;popd.textContent=Math.round(d)+' m';popw.textContent='· 걸어서 약 '+(Math.round(d/1.25/60*10)/10).toFixed(1)+'분';popb.textContent=tx;
+ popt.textContent=nm;popd.textContent=Math.round(d)+' m';const wk=walkInfo(nm,d);popw.textContent=wk.net?'길 따라 '+wk.m+' m · 걸어서 약 '+wk.min+'분':'걸어서 약 '+wk.min+'분';popb.textContent=tx;
  pop.style.display='none';void pop.offsetWidth;pop.style.display='block';info.style.display='none'}
 function closePop(){if(pop.style.display==='none')return;pop.style.display='none';if(sel)info.style.display='flex'}
 function clearSel(){sel=null;info.style.display='none';pop.style.display='none';if(line){marks.remove(line);line.geometry.dispose();line=null}}
